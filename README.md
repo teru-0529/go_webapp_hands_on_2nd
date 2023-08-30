@@ -31,7 +31,45 @@ https://github.com/teru-0529/go_webapp_hands_on_2nd
   > [【参考】【2023年最新版】VSCodeをGo言語超特化型にする、最高の拡張機能10選まとめ。](https://yurupro.cloud/2531/)
 * Webサーバーの起動
   ```
+  REM main関数の実行
   go run .
   ```
 * APIの確認
   > http://localhost:18080/from_browser
+
+---
+
+### SECTION-055 リファクタリングとテストコード
+
+* テスト容易性を高めるため`main`から`run`関数へ処理を分離する。
+  * 出力結果を検証しやすくする。
+  * 外部からの中断操作、異常状態を検知できるようにする。
+* 外部からの中断操作を受け付けるため、`Shutdown`メソッドが実装されている`*http.Server`の`ListenAndServe`メソッドを利用してHTTPサーバーを起動する。
+  * `*http.Server.ListenAndServe`メソッドを実行してHTTPリクエストを受け付ける。
+  * 引数で渡された`context.Context`を通じて処理の中断命令を検知し、`*http.Server.Shutdown`メソッドでサーバー機能を終了する。
+  * 戻り値として`*http.Server.ListenAndServe`の戻り値のエラーを返す。
+* `*http.Server.ListenAndServe`メソッドを実行しつつ、`context.Context`から伝播される終了通知を待機する。
+  * `[golang.org/x/sync/errgroup]`パッケージを利用して終了通知を待機する。
+  * `errgroup.WithContext`関数を使い、取得した`*errgroup.Group`型の値の`Go`メソッドを利用することで、`func() error`というシグネチャの関数を別ゴルーチンで起動する。
+  * `run`関数はHTTPリクエストを待機しつつ、引数で受け取った`context.Context`型の値の`Done`メソッドの戻り値として得られるチャネルからの通知を待つ。
+  > [【参考】sync.ErrGroupで複数のgoroutineを制御する](https://deeeet.com/writing/2016/10/12/errgroup/)
+  ```
+  REM パッケージの取得
+  go get -u golang.org/x/sync
+  ```
+  ```
+  REM go.mod ファイル/go.sum ファイルの更新
+  go mod tidy
+  ```
+* `run`関数のテスト
+  * 期待通りにHTTPサーバーが起動しているか(HTTPサーバーの戻り値の検証)
+  * 意図通りに終了するか(run関数の終了通知処理検証)
+  ```
+  REM テスト実行
+  go test -v ./...
+  ```
+
+---
+
+
+
