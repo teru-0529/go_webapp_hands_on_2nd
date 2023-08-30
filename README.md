@@ -95,3 +95,9 @@ https://github.com/teru-0529/go_webapp_hands_on_2nd
   [【参考】Goでリリースビルドするときに最低限付けておきたいオプション](https://qiita.com/ssc-ynakamura/items/da37856f7f217d708a07)
 
 ---
+
+### SECTION-058 Makefileを追加する
+
+* windwos環境のため、help(grep)/testの一部(-raceオプション)以外を作成
+
+---
