@@ -4,5 +4,26 @@
 			"path": "."
 		}
 	],
-	"settings": {}
+	"settings": {
+		"[go]": {
+			"editor.tabSize": 2,
+			"editor.insertSpaces": false,
+			"editor.formatOnSave": true,
+			"editor.formatOnPaste": true,
+			"editor.formatOnType": true,
+			"editor.defaultFormatter": "golang.go",
+		},
+		"go.useLanguageServer": true,
+		"editor.trimAutoWhitespace": false,
+		// "go.formatTool": "gofmt",
+		// "go.formatFlags": [
+		// 	"-w"
+		// ],
+		// "go.lintTool": "golint",
+		// "go.lintOnSave": "package",
+		// "go.vetOnSave": "package",
+		// "go.buildOnSave": "package",
+		// "go.testOnSave": false,
+		// "go.gocodeAutoBuild": true,
+	}
 }
