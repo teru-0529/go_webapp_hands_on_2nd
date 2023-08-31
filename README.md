@@ -101,3 +101,9 @@ https://github.com/teru-0529/go_webapp_hands_on_2nd
 * windwos環境のため、help(grep)/testの一部(-raceオプション)以外を作成
 
 ---
+
+### SECTION-059 Github Actionsを利用した継続的インテグレーション環境
+
+* テストとコードカバレッジ取得の自動実行
+
+---
