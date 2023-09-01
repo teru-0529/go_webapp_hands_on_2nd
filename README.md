@@ -30,7 +30,7 @@ https://github.com/teru-0529/go_webapp_hands_on_2nd
   * ポート番号固定
   > [【参考】【2023年最新版】VSCodeをGo言語超特化型にする、最高の拡張機能10選まとめ。](https://yurupro.cloud/2531/)
 * Webサーバーの起動
-  ```
+  ```cmd
   REM main関数の実行
   go run .
   ```
@@ -53,18 +53,18 @@ https://github.com/teru-0529/go_webapp_hands_on_2nd
   * `errgroup.WithContext`関数を使い、取得した`*errgroup.Group`型の値の`Go`メソッドを利用することで、`func() error`というシグネチャの関数を別ゴルーチンで起動する。
   * `run`関数はHTTPリクエストを待機しつつ、引数で受け取った`context.Context`型の値の`Done`メソッドの戻り値として得られるチャネルからの通知を待つ。
   > [【参考】sync.ErrGroupで複数のgoroutineを制御する](https://deeeet.com/writing/2016/10/12/errgroup/)
-  ```
+  ```cmd
   REM パッケージの取得
   go get -u golang.org/x/sync
   ```
-  ```
+  ```cmd
   REM go.mod ファイル/go.sum ファイルの更新
   go mod tidy
   ```
 * `run`関数のテスト
   * 期待通りにHTTPサーバーが起動しているか(HTTPサーバーの戻り値の検証)
   * 意図通りに終了するか(run関数の終了通知処理検証)
-  ```
+  ```cmd
   REM テスト実行
   go test -v ./...
   ```
@@ -77,7 +77,7 @@ https://github.com/teru-0529/go_webapp_hands_on_2nd
   * `run`関数外部から動的に選択したポート番号のリッスンを開始した`net.Listener`インターフェースを満たす型の値を渡す。
   * `net/http`パッケージではポート番号に`0`を指定すると、利用可能なポート番号を選択してくれることを利用。
   * `main`関数では、実行時の引数でポート番号を指定する。
-  ```
+  ```cmd
   REM ポート番号を指定してmain関数を実行する
   go run . %port_no%
   ```
@@ -89,7 +89,7 @@ https://github.com/teru-0529/go_webapp_hands_on_2nd
 * マルチステージビルドを実施し、ビルド環境/実行環境を分割する。
 * dev環境では`air`コマンドを実行しファイルの更新を検知した際に`go build`コマンドを再実行、プログラム再起動を行う。ローカルマシンのディレクトリをマウントしておくことでホットリロードを実現。
 * ビルド後コンテナを起動することで、ローカルマシンからリクエストが送信できる
-  ```
+  ```cmd
   docker compose up
   ```
   [【参考】Goでリリースビルドするときに最低限付けておきたいオプション](https://qiita.com/ssc-ynakamura/items/da37856f7f217d708a07)
@@ -114,13 +114,26 @@ https://github.com/teru-0529/go_webapp_hands_on_2nd
 
 * 引数での指定を戻して、環境変数を使って起動する。
 * TODO: ポート番号の動的指定をしなくなったためテストコードを一時的にスキップ
-  ```
+  ```cmd
   REM パッケージの取得
   go get -u github.com/caarlos0/env/v6
   ```
-  ```
+  ```cmd
   REM go.mod ファイル/go.sum ファイルの更新
   go mod tidy
+  ```
+
+---
+
+2023/09/02
+
+### SECTION-061 シグナルをハンドリングする
+
+* グレースフルシャットダウンを実現する。
+  * TODO:正しく動いてなさそう（Windowsからのコールだから検証できていないだけ？）
+  ```powershell
+  REM 時間計測
+  Measure-Command {curl http://localhost:18000/from_browsess }
   ```
 
 ---
