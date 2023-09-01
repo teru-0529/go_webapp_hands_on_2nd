@@ -12,9 +12,6 @@ import (
 )
 
 func TestRun(t *testing.T) {
-	// FIXME:リファクタリング中
-	t.Skip("リファクタリング中")
-
 	// INFO:利用可能なポート番号を確保
 	l, err := net.Listen("tcp", "localhost:0")
 	if err != nil {
@@ -24,11 +21,19 @@ func TestRun(t *testing.T) {
 	// INFO:キャンセル可能なコンテキストを準備
 	ctx, cancel := context.WithCancel(context.Background())
 
+	// INFO:ハンドラー実装を定義
+	mux := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		fmt.Fprintf(w, "Hello, %s!", r.URL.Path[1:])
+	})
+
 	// INFO:動機制御用のエラーグループを準備
 	eg, ctx := errgroup.WithContext(ctx)
 
 	// INFO:HTTPサーバーの起動
-	eg.Go(func() error { return run(ctx) })
+	eg.Go(func() error {
+		s := NewServer(l, mux)
+		return s.Run(ctx)
+	})
 
 	// INFO:Getリクエストの送信
 	in := "message"

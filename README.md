@@ -137,3 +137,11 @@ https://github.com/teru-0529/go_webapp_hands_on_2nd
   ```
 
 ---
+
+### SECTION-062 「Server」構造体を定義する
+
+* `http.Server`型をラップした独自定義型を作成する。
+* 動的に選択したポートをリッスンするため`net.Listener`型の値を引数で受け取る。
+* 責務から分離するため、ルーティングの設定を引数で受け取る。
+
+---
