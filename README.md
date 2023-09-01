@@ -107,3 +107,20 @@ https://github.com/teru-0529/go_webapp_hands_on_2nd
 * テストとコードカバレッジ取得の自動実行
 
 ---
+
+2023/08/31
+
+### SECTION-060 環境変数から設定をロードする
+
+* 引数での指定を戻して、環境変数を使って起動する。
+* TODO: ポート番号の動的指定をしなくなったためテストコードを一時的にスキップ
+  ```
+  REM パッケージの取得
+  go get -u github.com/caarlos0/env/v6
+  ```
+  ```
+  REM go.mod ファイル/go.sum ファイルの更新
+  go mod tidy
+  ```
+
+---

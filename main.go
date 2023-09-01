@@ -9,30 +9,34 @@ import (
 	"net/http"
 	"os"
 
+	"github.com/teru-0529/go_webapp_hands_on_2nd/config"
 	"golang.org/x/sync/errgroup"
 )
 
 func main() {
-	// INFO:引数でポート番号が指定されていることを確認
-	if len(os.Args) != 2 {
-		log.Printf("need port number\n")
-		os.Exit(1)
-	}
-	// INFO:ポート番号が利用可能なことを確認
-	p := os.Args[1]
-	l, err := net.Listen("tcp", ":"+p)
-	if err != nil {
-		log.Fatalf("fail to listen port %s: %v", p, err)
-	}
 	// INFO:HTTPサーバーを起動
-	if err := run(context.Background(), l); err != nil {
+	if err := run(context.Background()); err != nil {
 		log.Printf("failed to terminate server: %+v", err)
 		os.Exit(1)
 	}
 }
 
 // INFO:HTTPサーバーを起動
-func run(ctx context.Context, l net.Listener) error {
+func run(ctx context.Context) error {
+	// INFO:環境変数の読込み
+	cfg, err := config.New()
+	if err != nil {
+		return err
+	}
+
+	// INFO:ポート番号が利用可能なことを確認
+	l, err := net.Listen("tcp", fmt.Sprintf(":%d", cfg.Port))
+	if err != nil {
+		log.Fatalf("fail to listen port %d: %v", cfg.Port, err)
+	}
+	url := fmt.Sprintf("http://%s", l.Addr().String())
+	log.Printf("start with: %v", url)
+
 	// INFO:HTTPサーバーの定義
 	s := &http.Server{
 		Handler: http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
