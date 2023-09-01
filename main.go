@@ -8,6 +8,9 @@ import (
 	"net"
 	"net/http"
 	"os"
+	"os/signal"
+	"syscall"
+	"time"
 
 	"github.com/teru-0529/go_webapp_hands_on_2nd/config"
 	"golang.org/x/sync/errgroup"
@@ -23,6 +26,10 @@ func main() {
 
 // INFO:HTTPサーバーを起動
 func run(ctx context.Context) error {
+	// INFO:外部からのシグナルを受け付ける
+	ctx, stop := signal.NotifyContext(ctx, os.Interrupt, syscall.SIGTERM)
+	defer stop()
+
 	// INFO:環境変数の読込み
 	cfg, err := config.New()
 	if err != nil {
@@ -40,6 +47,8 @@ func run(ctx context.Context) error {
 	// INFO:HTTPサーバーの定義
 	s := &http.Server{
 		Handler: http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+			// FIXME:実験用
+			time.Sleep(5 * time.Second)
 			fmt.Fprintf(w, "Hello, %s!", r.URL.Path[1:])
 		}),
 	}
