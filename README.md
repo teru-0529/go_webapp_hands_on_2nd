@@ -153,3 +153,9 @@ https://github.com/teru-0529/go_webapp_hands_on_2nd
 * HTTPサーバーが稼働中かどうかを確認する`/health`エンドポイントを宣言する。
 
 ---
+
+### SECTION-064 「Run」関数を再度リファクタリングする
+
+* `Server`型、`NewMux`関数を使って`Run`関数をリファクタリングする。
+
+---
